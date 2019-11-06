@@ -9,7 +9,7 @@ import info.fandroid.chat.cache.messages.MessagesDao
 import info.fandroid.chat.domain.friends.FriendEntity
 import info.fandroid.chat.domain.messages.MessageEntity
 
-@Database(entities = [FriendEntity::class, MessageEntity::class], version = 5, exportSchema = false)
+@Database(entities = [FriendEntity::class, MessageEntity::class], version = 8, exportSchema = false)
 abstract class ChatDatabase : RoomDatabase() {
     abstract val friendsDao: FriendsDao
     abstract val messagesDao: MessagesDao

@@ -3,11 +3,11 @@ package info.fandroid.chat.cache
 import info.fandroid.chat.data.account.AccountCache
 import info.fandroid.chat.domain.account.AccountEntity
 import info.fandroid.chat.domain.type.Either
-import info.fandroid.chat.domain.type.None
 import info.fandroid.chat.domain.type.Failure
+import info.fandroid.chat.domain.type.None
 import javax.inject.Inject
 
-class AccountCacheImpl @Inject constructor(private val prefsManager: SharedPrefsManager) : AccountCache {
+class AccountCacheImpl @Inject constructor(private val prefsManager: SharedPrefsManager, private val chatDatabase: ChatDatabase) : AccountCache {
 
     override fun saveToken(token: String): Either<Failure, None> {
         return prefsManager.saveToken(token)
@@ -18,6 +18,7 @@ class AccountCacheImpl @Inject constructor(private val prefsManager: SharedPrefs
     }
 
     override fun logout(): Either<Failure, None> {
+        chatDatabase.clearAllTables()
         return prefsManager.removeAccount()
     }
 
