@@ -2,40 +2,21 @@ package info.fandroid.chat.ui.core
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import info.fandroid.chat.domain.messages.MessageEntity
 
-abstract class BaseAdapter<VH : BaseAdapter.BaseViewHolder> : RecyclerView.Adapter<VH>() {
-
-    var items: ArrayList<Any> = ArrayList()
+abstract class BaseAdapter<Item: Any, VH : BaseAdapter.BaseViewHolder>(
+    diff: DiffUtil.ItemCallback<Item>) : ListAdapter<Item, VH>(diff) {
 
     var onClick: OnClick? = null
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.bind(getItem(position))
 
         holder.onClick = onClick
-    }
-
-
-    fun getItem(position: Int): Any {
-        return items[position]
-    }
-
-
-    fun add(newItem: Any) {
-        items.add(newItem)
-    }
-
-    fun add(newItems: List<Any>) {
-        items.addAll(newItems)
-    }
-
-    fun clear() {
-        items.clear()
     }
 
 

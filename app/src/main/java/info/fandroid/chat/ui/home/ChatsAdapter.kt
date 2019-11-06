@@ -8,9 +8,9 @@ import info.fandroid.chat.ui.core.BaseAdapter
 import info.fandroid.chat.ui.core.GlideHelper
 import kotlinx.android.synthetic.main.fragment_account.*
 
-open class ChatsAdapter : BaseAdapter<ChatsAdapter.ChatViewHolder>() {
+open class ChatsAdapter : MessagesAdapter() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemChatBinding.inflate(layoutInflater, parent, false)
         return ChatViewHolder(binding)

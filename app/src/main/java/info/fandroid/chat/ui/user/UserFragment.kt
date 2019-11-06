@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.View
 import info.fandroid.chat.R
 import info.fandroid.chat.remote.service.ApiService
+import info.fandroid.chat.ui.App
 import info.fandroid.chat.ui.core.BaseFragment
 import info.fandroid.chat.ui.core.GlideHelper
+import info.fandroid.chat.ui.core.navigation.Navigator
 import kotlinx.android.synthetic.main.fragment_user.*
+import javax.inject.Inject
 
 class UserFragment : BaseFragment() {
     override val layoutId = R.layout.fragment_user
@@ -24,6 +27,8 @@ class UserFragment : BaseFragment() {
                 val email = args.getString(ApiService.PARAM_EMAIL)
                 val status = args.getString(ApiService.PARAM_STATUS)
 
+                val id = args.getLong(ApiService.PARAM_CONTACT_ID)
+
                 GlideHelper.loadImage(requireContext(), image, imgPhoto, R.drawable.ic_account_circle)
 
                 tvName.text = name
@@ -33,6 +38,14 @@ class UserFragment : BaseFragment() {
                 if (tvStatus.text.isEmpty()) {
                     tvStatus.visibility = View.GONE
                     tvHintStatus.visibility = View.GONE
+                }
+
+                imgPhoto.setOnClickListener {
+                    navigator.showImageDialog(requireContext(), imgPhoto.drawable)
+                }
+
+                btnSendMessage.setOnClickListener {
+                    navigator.showChatWithContact(id, name, requireContext())
                 }
             }
         }

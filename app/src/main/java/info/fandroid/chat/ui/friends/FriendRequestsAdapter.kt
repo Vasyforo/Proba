@@ -6,7 +6,8 @@ import info.fandroid.chat.databinding.ItemFriendRequestBinding
 import info.fandroid.chat.domain.friends.FriendEntity
 import info.fandroid.chat.ui.core.BaseAdapter
 
-open class FriendRequestsAdapter : BaseAdapter<FriendRequestsAdapter.FriendRequestViewHolder>() {
+open class FriendRequestsAdapter :
+    BaseAdapter<FriendEntity, FriendRequestsAdapter.FriendRequestViewHolder>(FriendsAdapter.FriendsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendRequestViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

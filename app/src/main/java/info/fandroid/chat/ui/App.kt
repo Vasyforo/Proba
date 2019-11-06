@@ -14,10 +14,13 @@ import info.fandroid.chat.ui.friends.FriendRequestsFragment
 import info.fandroid.chat.ui.friends.FriendsFragment
 import info.fandroid.chat.ui.home.HomeActivity
 import info.fandroid.chat.ui.home.ChatsFragment
+import info.fandroid.chat.ui.home.MessagesActivity
 import info.fandroid.chat.ui.home.MessagesFragment
 import info.fandroid.chat.ui.login.LoginFragment
 import info.fandroid.chat.ui.register.RegisterActivity
 import info.fandroid.chat.ui.register.RegisterFragment
+import info.fandroid.chat.ui.user.UserActivity
+import info.fandroid.chat.ui.user.UserFragment
 import javax.inject.Singleton
 
 class App : Application() {
@@ -47,6 +50,8 @@ interface AppComponent {
     fun inject(activity: RouteActivity)
     fun inject(activity: HomeActivity)
     fun inject(activity: AccountActivity)
+    fun inject(activity: MessagesActivity)
+    fun inject(activity: UserActivity)
 
     //fragments
     fun inject(fragment: RegisterFragment)
@@ -56,6 +61,7 @@ interface AppComponent {
     fun inject(fragment: FriendRequestsFragment)
     fun inject(fragment: AccountFragment)
     fun inject(fragment: MessagesFragment)
+    fun inject(fragment: UserFragment)
 
     //services
     fun inject(service: FirebaseService)

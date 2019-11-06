@@ -15,6 +15,7 @@ import info.fandroid.chat.domain.type.Failure
 import info.fandroid.chat.domain.type.None
 import info.fandroid.chat.presentation.viewmodel.AccountViewModel
 import info.fandroid.chat.presentation.viewmodel.FriendsViewModel
+import info.fandroid.chat.remote.service.ApiService
 import info.fandroid.chat.ui.App
 import info.fandroid.chat.ui.core.BaseActivity
 import info.fandroid.chat.ui.core.BaseFragment
@@ -76,6 +77,11 @@ class HomeActivity : BaseActivity() {
                 openDrawer()
                 friendsViewModel.getFriendRequests()
                 binding.navigation.requestContainer.visibility = View.VISIBLE
+            }
+            NotificationHelper.TYPE_SEND_MESSAGE -> {
+                val contactId = intent.getLongExtra(ApiService.PARAM_CONTACT_ID, 0L)
+                val contactName = intent.getStringExtra(ApiService.PARAM_NAME)
+                navigator.showChatWithContact(contactId, contactName, this)
             }
         }
 
@@ -142,6 +148,7 @@ class HomeActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         accountViewModel.getAccount()
+        accountViewModel.updateLastSeen()
     }
 
     private fun openDrawer() {
