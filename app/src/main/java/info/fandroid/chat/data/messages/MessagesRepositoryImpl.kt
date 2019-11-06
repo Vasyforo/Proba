@@ -1,8 +1,6 @@
 package info.fandroid.chat.data.messages
 
-import androidx.lifecycle.LiveData
 import info.fandroid.chat.data.account.AccountCache
-import info.fandroid.chat.domain.friends.FriendEntity
 import info.fandroid.chat.domain.messages.MessageEntity
 import info.fandroid.chat.domain.messages.MessagesRepository
 import info.fandroid.chat.domain.type.*
@@ -21,8 +19,9 @@ class MessagesRepositoryImpl(
                         if (message.senderId == account.id) {
                             message.fromMe = true
                         }
-                        messagesCache.saveMessage(message)
                     }
+
+                    messagesCache.saveMessages(it)
                 }
             } else {
                 Either.Right(messagesCache.getChats())
@@ -44,11 +43,11 @@ class MessagesRepositoryImpl(
                             message.fromMe = true
                         }
 
-                        val contact = messagesCache.getChats().first { it.contact?.id == contactId }.contact
+                        val contact = messagesCache.getChats().firstOrNull { it.contact?.id == contactId }?.contact
                         message.contact = contact
-
-                        messagesCache.saveMessage(message)
                     }
+
+                    messagesCache.saveMessages(it)
                 }
             } else {
                 Either.Right(messagesCache.getMessagesWithContact(contactId))
@@ -64,6 +63,13 @@ class MessagesRepositoryImpl(
     ): Either<Failure, None> {
         return accountCache.getCurrentAccount().flatMap {
             messagesRemote.sendMessage(it.id, toId, it.token, message, image)
+        }
+    }
+
+    override fun deleteMessagesByUser(messageId: Long): Either<Failure, None> {
+        return accountCache.getCurrentAccount().flatMap {
+            messagesCache.deleteMessagesByUser(messageId)
+            messagesRemote.deleteMessagesByUser(it.id, messageId, it.token)
         }
     }
 
