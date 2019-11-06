@@ -7,6 +7,8 @@ import info.fandroid.chat.domain.type.Failure
 import info.fandroid.chat.domain.type.None
 import info.fandroid.chat.remote.core.Request
 import info.fandroid.chat.remote.service.ApiService
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.HashMap
@@ -37,6 +39,11 @@ class MessagesRemoteImpl @Inject constructor(
     ): Either<Failure, None> {
         return request.make(service.sendMessage(
             createSendMessageMap(fromId, toId, token, message, image))) { None() }
+    }
+
+    override fun deleteMessagesByUser(userId: Long, messageId: Long, token: String): Either<Failure, None> {
+        return request.make(service.deleteMessagesByUser(
+            createDeleteMessagesMap(userId, messageId, token))) { None() }
     }
 
 
@@ -89,6 +96,28 @@ class MessagesRemoteImpl @Inject constructor(
         map.put(ApiService.PARAM_MESSAGE, message)
         map.put(ApiService.PARAM_MESSAGE_TYPE, type.toString())
         map.put(ApiService.PARAM_MESSAGE_DATE, date.toString())
+
+        return map
+    }
+
+    private fun createDeleteMessagesMap(
+        userId: Long,
+        messageId: Long,
+        token: String
+    ): Map<String, String> {
+        val itemsArrayObject = JSONObject()
+        val itemsArray = JSONArray()
+        val itemObject = JSONObject()
+
+        itemObject.put("message_id", messageId)
+        itemsArray.put(itemObject)
+        itemsArrayObject.put("messages", itemsArray)
+
+
+        val map = HashMap<String, String>()
+        map.put(ApiService.PARAM_USER_ID, userId.toString())
+        map.put(ApiService.PARAM_MESSAGES_IDS, itemsArrayObject.toString())
+        map.put(ApiService.PARAM_TOKEN, token)
 
         return map
     }
